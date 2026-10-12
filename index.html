@@ -4,19 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Asisten - Laboratorium Statistika Industri Unpas</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #450a0a;
-            background-image: url('background.jpeg');
+            background-image: var(--custom-bg, url('background.jpeg'));
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 16px;
+            right: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 50;
+            user-select: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
         .glass-panel {
             background: rgba(255, 255, 255, 0.88);
@@ -25,7 +40,6 @@
         .glass-header {
             background: rgba(69, 10, 10, 0.92);
             backdrop-filter: blur(8px);
-        
         }
         .clock-box {
             background: rgba(30, 41, 59, 0.75);
@@ -36,7 +50,7 @@
 </head>
 <body class="min-h-screen text-slate-900 relative p-3 sm:p-4 flex flex-col justify-center items-center">
 
-    <!-- TOMBOL HAMBURGER GARIS TIGA DI HALAMAN DEPAN (POJOK KIRI ATAS) -->
+    <div class="watermark">LAB. STATISTIKA INDUSTRI UNPAS</div>
     <div id="topBarBtn" class="fixed top-4 left-4 z-40">
         <button onclick="openPasswordModal('main')" class="bg-red-700/90 hover:bg-red-800 text-white p-2.5 rounded-2xl shadow-lg transition duration-200 backdrop-blur-md border border-red-500/40 flex items-center justify-center cursor-pointer" title="Menu Navigasi">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,15 +58,12 @@
             </svg>
         </button>
     </div>
-
-    <!-- TOMBOL HAMBURGER DI MENU UTAMA (POJOK KIRI ATAS) -->
     <div id="mainTopBarBtn" class="fixed top-4 left-4 z-40 hidden">
         <button onclick="openDropdownMenu(event)" class="bg-red-950/90 hover:bg-red-900 text-white p-2.5 rounded-2xl shadow-lg transition duration-200 backdrop-blur-md border border-red-700/60 flex items-center justify-center cursor-pointer" title="Menu Navigasi">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>
-        <!-- Dropdown Menu -->
         <div id="navDropdown" class="hidden absolute left-0 mt-2 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-200 py-2 z-50 text-slate-800">
             <button onclick="requestSettingsAccess()" class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-red-50 hover:text-red-700 transition flex items-center gap-2 cursor-pointer">
                 ⚙️ Kelola Database & Status
@@ -63,15 +74,13 @@
         </div>
     </div>
 
-    <!-- HALAMAN DEPAN (WELCOME SCREEN DENGAN JAM & TANGGAL BESAR) -->
-    <div id="welcomeScreen" class="w-full max-w-2xl glass-welcome text-white p-8 sm:p-12 rounded-3xl shadow-2xl border border-red-500/30 text-center flex flex-col items-center gap-6">
+    <div id="welcomeScreen" class="w-full max-w-2xl glass-welcome text-white p-8 sm:p-12 rounded-3xl shadow-2xl border border-red-500/30 text-center flex flex-col items-center gap-6 z-10">
         <div class="clock-box px-8 py-6 rounded-3xl shadow-inner w-full flex flex-col items-center gap-3">
             <div id="welcomeDate" class="text-slate-200 font-bold text-lg sm:text-2xl tracking-wide">--</div>
             <div id="welcomeTime" class="text-5xl sm:text-7xl font-mono font-extrabold text-white tracking-widest drop-shadow-lg">--:--:--</div>
         </div>
     </div>
 
-    <!-- MODAL PASSWORD UNIVERSAL -->
     <div id="passwordModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white/95 backdrop-blur-md rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200">
             <h3 id="passwordModalTitle" class="text-lg font-bold text-slate-900 mb-2">🔒 Autoritasi Sistem</h3>
@@ -84,64 +93,65 @@
         </div>
     </div>
 
-    <!-- MENU UTAMA (APLIKASI UTAMA - TERSEMBUNYI DI AWAL) -->
     <div id="mainApp" class="hidden max-w-6xl w-full mx-auto glass-panel shadow-2xl rounded-3xl overflow-hidden border border-white/40 z-10">
-        <!-- Header Laboratorium -->
         <div class="glass-header text-white px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-red-900/50">
             <div>
-                <div class="text-[11px] uppercase tracking-wider text-red-300 font-semibold mb-0.5">Laboratorium Statistika Industri • Universitas Pasundan</div>
+                <div class="text-[11px] uppercase tracking-wider text-red-300 font-semibold mb-0.5">Laboratorium Statistika Industri • Universitas Pasundan[cite: 1]</div>
                 <h1 class="text-xl sm:text-2xl font-bold">Pemanggilan Asisten</h1>
             </div>
             
-            <!-- Kotak Jam dan Tanggal di Pojok Kanan Atas Header -->
             <div id="dateTimeBadge" class="inline-flex flex-col clock-box px-4 py-2 rounded-xl font-mono shadow-md w-full sm:w-auto text-center sm:text-right">
                 <span id="liveDate" class="font-semibold text-slate-200 text-xs sm:text-sm">--</span>
                 <span id="liveTime" class="text-xs sm:text-sm text-white font-semibold tracking-wider mt-0.5">--:--:--</span>
             </div>
         </div>
 
-        <!-- Tabel Asisten Utama (10 Data dengan Huruf Terbaca Jelas, Pas Tanpa Scroll) -->
         <div class="p-4 sm:p-5">
             <div class="overflow-hidden rounded-xl border border-slate-300/60 shadow-sm bg-white/95">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-200/80 text-slate-700 text-xs uppercase tracking-wider">
-                            <th class="py-2.5 px-3">Kode</th>
-                            <th class="py-2.5 px-3">Nama Asisten</th>
-                            <th class="py-2.5 px-3 text-center">Pemanggilan Audio</th>
-                            <th class="py-2.5 px-3 text-center">Kehadiran</th>
-                            <th class="py-2.5 px-3 text-center">Status Asistensi</th>
+                        <tr class="bg-slate-200/80 text-slate-800 text-xs uppercase tracking-wider font-bold">
+                            <th class="py-3 px-2">Kode</th>
+                            <th class="py-3 px-2">Nama Asisten</th>
+                            <th class="py-3 px-2 text-center">Pemanggilan Audio</th>
+                            <th class="py-3 px-2 text-center">Kehadiran</th>
+                            <th class="py-3 px-2 text-center">Status Asistensi</th>
                         </tr>
                     </thead>
-                    <tbody id="assistantTable" class="divide-y divide-slate-200/80 text-sm">
-                        <!-- Render 10 Data via JS -->
+                    <tbody id="assistantTable" class="divide-y divide-slate-200/80">
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Modal Konfirmasi Hapus (Z-Index Lebih Tinggi agar Muncul di Atas Modal Pengaturan) -->
-<div id="confirmDeleteModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden flex items-center justify-center p-4 z-[9999]">
-    <div class="bg-white/95 backdrop-blur-md rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200">
-        <h3 class="text-lg font-bold text-slate-900 mb-2">⚠️ Konfirmasi Hapus</h3>
-        <p id="confirmDeleteText" class="text-xs text-slate-600 mb-6">Apakah Anda yakin ingin menghapus data asisten ini?</p>
-        <div class="flex justify-end gap-2">
-            <button onclick="closeConfirmDeleteModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-medium cursor-pointer">Batal (Esc)</button>
-            <button id="btnConfirmYes" onclick="executeDelete()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold cursor-pointer">Ya / Hapus (Enter)</button>
+    <div id="confirmDeleteModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden flex items-center justify-center p-4 z-[9999]">
+        <div class="bg-white/95 backdrop-blur-md rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-900 mb-2">⚠️ Konfirmasi Hapus</h3>
+            <p id="confirmDeleteText" class="text-xs text-slate-600 mb-6">Apakah Anda yakin ingin menghapus data asisten ini?</p>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeConfirmDeleteModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-medium cursor-pointer">Batal (Esc)</button>
+                <button id="btnConfirmYes" onclick="executeDelete()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold cursor-pointer">Ya / Hapus (Enter)</button>
+            </div>
         </div>
     </div>
-</div>
 
-    <!-- Modal Panel Pengaturan & Manajemen Database -->
     <div id="settingsModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white/95 backdrop-blur-md rounded-2xl max-w-4xl w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-slate-200">
             <div class="flex justify-between items-center mb-4 border-b pb-3">
-                <h3 class="text-lg font-bold text-slate-900">⚙️ Kelola Database & Status Asisten Lab Statistika</h3>
+                <h3 class="text-lg font-bold text-slate-900">⚙️ Kelola Database & Pengaturan</h3>
                 <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold cursor-pointer">&times;</button>
             </div>
 
-            <!-- Form Tambah / Edit -->
+            <div class="bg-slate-50/90 p-4 rounded-xl mb-6 border border-slate-200">
+                <h4 class="font-semibold text-xs text-slate-700 mb-2">🖼️ Ubah Background Aplikasi</h4>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                    <input type="file" id="inputBgFile" accept="image/*" class="w-full sm:w-auto px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-600 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer">
+                    <button onclick="saveCustomBackground()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold cursor-pointer">Terapkan Background</button>
+                    <button onclick="resetDefaultBackground()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold cursor-pointer">Reset Default</button>
+                </div>
+            </div>
+
             <div class="bg-slate-50/90 p-4 rounded-xl mb-6 border border-slate-200">
                 <h4 id="formTitle" class="font-semibold text-xs text-slate-700 mb-3">➕ Tambah Asisten Baru</h4>
                 <input type="hidden" id="editIndex" value="-1">
@@ -166,7 +176,6 @@
                 </div>
             </div>
 
-            <!-- Daftar Tabel Kelola -->
             <h4 class="font-semibold text-xs text-slate-700 mb-2">Daftar & Pengaturan Status Asisten</h4>
             <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white/90">
                 <table class="w-full text-left text-sm">
@@ -180,7 +189,6 @@
                         </tr>
                     </thead>
                     <tbody id="settingsTableBody" class="divide-y divide-slate-200">
-                        <!-- Render via JS -->
                     </tbody>
                 </table>
             </div>
@@ -192,7 +200,37 @@
         let deleteTargetIndex = -1;
         let passwordIntent = 'main';
 
-        // Fungsi Jam dan Tanggal Real-Time
+        function loadSavedBackground() {
+            const savedBg = localStorage.getItem('app_background_image');
+            if (savedBg) {
+                document.documentElement.style.setProperty('--custom-bg', `url('${savedBg}')`);
+            }
+        }
+        loadSavedBackground();
+
+        function saveCustomBackground() {
+            const fileInput = document.getElementById("inputBgFile");
+            if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    localStorage.setItem('app_background_image', base64Image);
+                    document.documentElement.style.setProperty('--custom-bg', `url('${base64Image}')`);
+                    alert("Background berhasil diubah dan disimpan secara permanen!");
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Pilih file gambar terlebih dahulu!");
+            }
+        }
+
+        function resetDefaultBackground() {
+            localStorage.removeItem('app_background_image');
+            document.documentElement.style.setProperty('--custom-bg', `url('background.jpeg')`);
+            alert("Background dikembalikan ke default.");
+        }
+
         function updateLiveClock() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -299,11 +337,11 @@
             document.getElementById("topBarBtn").style.display = "block";
         }
 
-        // 10 Contoh Nama Asisten Laboratorium Statistika Industri Unpas
         const defaultData = [
             { code: "STA-01", name: "Muhammad Dzulfikar, S.T.", present: true, accepting: true, audio: "" },
             { code: "STA-02", name: "Anisa Fitriani, S.T.", present: true, accepting: false, audio: "" },
             { code: "STA-03", name: "Dimas Prasetyo", present: false, accepting: false, audio: "" },
+            { code: "STA-04", name: "Salsabila Zahra, S.T.", present: true, accepting: true, audio: "" },
             { code: "STA-05", name: "Fajar Hidayat", present: true, accepting: true, audio: "" },
             { code: "STA-06", name: "Rizky Ramadhan, S.T.", present: true, accepting: true, audio: "" },
             { code: "STA-07", name: "Nadia Putri", present: false, accepting: false, audio: "" },
@@ -337,22 +375,21 @@
                     : 'bg-amber-50 text-amber-700 border-amber-300';
 
                 row.innerHTML = `
-                    <td class="py-2.5 px-3 font-mono font-semibold text-slate-700 text-sm">${item.code}</td>
-                    <td class="py-2.5 px-3 font-bold text-slate-900 text-base">
+                    <td class="py-3 px-2 font-mono font-bold text-slate-800 text-base">${item.code}</td>
+                    <td class="py-3 px-2 font-extrabold text-slate-900 text-lg">
                         ${item.name}
-                        ${item.audio ? '<span class="ml-2 text-[10px] bg-red-100 text-red-800 font-semibold px-2 py-0.5 rounded">MP3 UNIK</span>' : ''}
                     </td>
-                    <td class="py-2.5 px-3 text-center">
-                        <button onclick='triggerAssistantCall(${index})' class="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold shadow-sm transition flex items-center justify-center gap-1.5 mx-auto cursor-pointer">
+                    <td class="py-3 px-2 text-center">
+                        <button onclick='triggerAssistantCall(${index})' class="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5 mx-auto cursor-pointer">
                             🔊 Panggil
                         </button>
                     </td>
-                    <td class="py-2.5 px-3 text-center font-semibold text-xs">
+                    <td class="py-3 px-2 text-center font-bold text-xs">
                         <span class="px-3 py-1 rounded-lg border ${presentClass} inline-block">
                             ${item.present ? 'Hadir' : 'Tidak Hadir'}
                         </span>
                     </td>
-                    <td class="py-2.5 px-3 text-center font-semibold text-xs">
+                    <td class="py-3 px-2 text-center font-bold text-xs">
                         <span class="px-3 py-1 rounded-lg border ${acceptingClass} inline-block">
                             ${item.accepting ? 'Menerima' : 'Tidak Menerima'}
                         </span>
@@ -375,7 +412,6 @@
             const assistant = assistants[index];
             
             if (!assistant.present || !assistant.accepting) {
-                alert(`⚠️ Peringatan: ${assistant.name} tidak dapat dipanggil.\n- Status Kehadiran: ${assistant.present ? 'Hadir' : 'Tidak Hadir'}\n- Status Asistensi: ${assistant.accepting ? 'Menerima' : 'Tidak Menerima'}\n\n(Asisten harus Hadir dan Menerima Asistensi).`);
                 return;
             }
 
